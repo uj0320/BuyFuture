@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BuyFuture.Models;
+using BuyFuture.EfModels;
+using System.Data;
 
 namespace BuyFuture.Controllers
 {

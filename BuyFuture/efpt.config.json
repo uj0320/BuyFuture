@@ -1,0 +1,39 @@
+﻿{
+   "ContextClassName": "BuyfutureContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": "EfModels",
+   "OutputContextPath": null,
+   "OutputPath": "EfModels",
+   "ProjectRootNamespace": "BuyFuture",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "price"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "stock"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "user"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "user_stock"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
+}
