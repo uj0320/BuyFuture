@@ -1,0 +1,7 @@
+﻿<script>
+    $(document).ready(function () {
+        $.getJSON("/Home/GetPriceData", function (jo) {
+            console.log(jo.x);
+        })
+    });
+</script>
