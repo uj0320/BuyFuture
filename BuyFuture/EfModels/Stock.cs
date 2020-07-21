@@ -6,15 +6,8 @@ namespace BuyFuture.EfModels
 {
     public partial class Stock
     {
-        public Stock()
-        {
-            UserStock = new HashSet<UserStock>();
-        }
-
         public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-
-        public virtual ICollection<UserStock> UserStock { get; set; }
     }
 }

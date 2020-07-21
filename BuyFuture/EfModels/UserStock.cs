@@ -8,9 +8,9 @@ namespace BuyFuture.EfModels
     {
         public int Id { get; set; }
         public int? UserId { get; set; }
-        public int? StockId { get; set; }
+        public int? StockNum { get; set; }
 
-        public virtual Stock Stock { get; set; }
+        public virtual StockBasic StockNumNavigation { get; set; }
         public virtual User User { get; set; }
     }
 }

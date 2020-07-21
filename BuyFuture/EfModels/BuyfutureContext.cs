@@ -16,14 +16,58 @@ namespace BuyFuture.EfModels
         {
         }
 
+        public virtual DbSet<ImmediatePrice> ImmediatePrice { get; set; }
+        public virtual DbSet<Model> Model { get; set; }
         public virtual DbSet<Price> Price { get; set; }
         public virtual DbSet<Stock> Stock { get; set; }
+        public virtual DbSet<StockBasic> StockBasic { get; set; }
+        public virtual DbSet<StockPrice> StockPrice { get; set; }
+        public virtual DbSet<TodayPrice> TodayPrice { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserModel> UserModel { get; set; }
         public virtual DbSet<UserStock> UserStock { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ImmediatePrice>(entity =>
+            {
+                entity.HasKey(e => e.StockNum)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("immediate_price");
+
+                entity.Property(e => e.StockNum)
+                    .HasColumnName("stock_num")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("varchar(0)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.StockName)
+                    .HasColumnName("stock_name")
+                    .HasColumnType("varchar(0)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<Model>(entity =>
+            {
+                entity.ToTable("model");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModelName)
+                    .HasColumnName("model_name")
+                    .HasColumnType("varchar(0)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
             modelBuilder.Entity<Price>(entity =>
             {
                 entity.ToTable("price");
@@ -103,6 +147,168 @@ namespace BuyFuture.EfModels
                     .HasCollation("utf8_general_ci");
             });
 
+            modelBuilder.Entity<StockBasic>(entity =>
+            {
+                entity.HasKey(e => e.StockNum)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("stock_basic");
+
+                entity.Property(e => e.StockNum)
+                    .HasColumnName("stock_num")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.StockName)
+                    .HasColumnName("stock_name")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<StockPrice>(entity =>
+            {
+                entity.ToTable("stock_price");
+
+                entity.HasIndex(e => e.StockNum)
+                    .HasName("fk_price_id");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.AdjClose)
+                    .HasColumnName("adj_close")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Close)
+                    .HasColumnName("close")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.High)
+                    .HasColumnName("high")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Low)
+                    .HasColumnName("low")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Open)
+                    .HasColumnName("open")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.StockNum)
+                    .HasColumnName("stock_num")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Volume)
+                    .HasColumnName("volume")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.StockNumNavigation)
+                    .WithMany(p => p.StockPrice)
+                    .HasForeignKey(d => d.StockNum)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_price_id");
+            });
+
+            modelBuilder.Entity<TodayPrice>(entity =>
+            {
+                entity.ToTable("today_price");
+
+                entity.HasIndex(e => e.StockNum)
+                    .HasName("fk_price_id1");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.DownStop)
+                    .HasColumnName("down_stop")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.High)
+                    .HasColumnName("high")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Low)
+                    .HasColumnName("low")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Open)
+                    .HasColumnName("open")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.StockNum)
+                    .HasColumnName("stock_num")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Time)
+                    .HasColumnName("time")
+                    .ValueGeneratedOnUpdate();
+
+                entity.Property(e => e.UpStop)
+                    .HasColumnName("up_stop")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Updown)
+                    .HasColumnName("updown")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Vol)
+                    .HasColumnName("vol")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.YClose)
+                    .HasColumnName("y_close")
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.StockNumNavigation)
+                    .WithMany(p => p.TodayPrice)
+                    .HasForeignKey(d => d.StockNum)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_price_id1");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("user");
@@ -113,22 +319,57 @@ namespace BuyFuture.EfModels
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
-                    .HasColumnType("varchar(255)")
+                    .HasColumnType("varchar(32)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Pwd)
                     .HasColumnName("pwd")
-                    .HasColumnType("varchar(255)")
+                    .HasColumnType("varchar(32)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<UserModel>(entity =>
+            {
+                entity.ToTable("user_model");
+
+                entity.HasIndex(e => e.ModelId)
+                    .HasName("fk_model_id1");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("fk_user_id1");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModelId)
+                    .HasColumnName("model_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("user_id")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.Model)
+                    .WithMany(p => p.UserModel)
+                    .HasForeignKey(d => d.ModelId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_model_id1");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserModel)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_user_id1");
             });
 
             modelBuilder.Entity<UserStock>(entity =>
             {
                 entity.ToTable("user_stock");
 
-                entity.HasIndex(e => e.StockId)
+                entity.HasIndex(e => e.StockNum)
                     .HasName("fk_stock_id");
 
                 entity.HasIndex(e => e.UserId)
@@ -138,17 +379,17 @@ namespace BuyFuture.EfModels
                     .HasColumnName("id")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.StockId)
-                    .HasColumnName("stock_id")
+                entity.Property(e => e.StockNum)
+                    .HasColumnName("stock_num")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.UserId)
                     .HasColumnName("user_id")
                     .HasColumnType("int(11)");
 
-                entity.HasOne(d => d.Stock)
+                entity.HasOne(d => d.StockNumNavigation)
                     .WithMany(p => p.UserStock)
-                    .HasForeignKey(d => d.StockId)
+                    .HasForeignKey(d => d.StockNum)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_stock_id");
 

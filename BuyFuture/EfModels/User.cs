@@ -8,6 +8,7 @@ namespace BuyFuture.EfModels
     {
         public User()
         {
+            UserModel = new HashSet<UserModel>();
             UserStock = new HashSet<UserStock>();
         }
 
@@ -15,6 +16,7 @@ namespace BuyFuture.EfModels
         public string Name { get; set; }
         public string Pwd { get; set; }
 
+        public virtual ICollection<UserModel> UserModel { get; set; }
         public virtual ICollection<UserStock> UserStock { get; set; }
     }
 }

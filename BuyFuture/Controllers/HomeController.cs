@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using BuyFuture.Models;
 using BuyFuture.EfModels;
 using System.Data;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BuyFuture.Controllers
 {
@@ -22,6 +23,11 @@ namespace BuyFuture.Controllers
 
         public IActionResult Index()
         {
+            BuyfutureContext db = new BuyfutureContext();
+            var users = (from x in db.User select x).ToList();
+            ViewBag.users = users;
+
+
             return View();
         }
 

@@ -14,6 +14,14 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
+         "Name": "immediate_price"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "model"
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "price"
       },
       {
@@ -22,7 +30,23 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "stock_basic"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "stock_price"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "today_price"
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "user"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "user_model"
       },
       {
          "HasPrimaryKey": true,
