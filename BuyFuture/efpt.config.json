@@ -4,7 +4,7 @@
    "DefaultDacpacSchema": null,
    "DoNotCombineNamespace": false,
    "IdReplace": false,
-   "IncludeConnectionString": true,
+   "IncludeConnectionString": false,
    "ModelNamespace": "EfModels",
    "OutputContextPath": null,
    "OutputPath": "EfModels",
@@ -19,14 +19,6 @@
       {
          "HasPrimaryKey": true,
          "Name": "model"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "price"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "stock"
       },
       {
          "HasPrimaryKey": true,

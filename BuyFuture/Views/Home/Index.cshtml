@@ -1,4 +1,56 @@
-﻿<dir class="row">
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.min.css" />
+<script>
+    $(document).ready(function () {        
+            $.getJSON("/Home/GetPrices", function (data) {                
+                gochart(data.highes, data.dates);
+            });       
+    });
+
+    function gochart(prices, time_series) {
+        var options = {
+            series: [{
+                name: "Desktops",
+                data: prices
+            }],
+            chart: {
+                height: 200,
+                
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: 'Product Trends by Month',
+                align: 'left'
+            },
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: time_series
+            }
+
+        };
+        var divs = document.querySelectorAll('[name = "chart"]');
+        divs.forEach(function (div) {
+            var chart = new ApexCharts(div, options);
+            chart.render();
+        });               
+    }
+</script>
+
+<dir class="row">
     <dir class="col-12">
         <div id="productCarousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -36,13 +88,19 @@
 <dir class="row">
     <table class="table">
         <tr>
-            <th>牛人榜</th>
+            <th></th>
+            <th>使用者</th>
         </tr>
+
         @foreach (var u in ViewBag.users)
         {
             <tr>
-                <td>@u.Name</td>
+                <td>
+                    <div name="chart">
 
+                    </div>
+                </td>
+                <td>@u.Name</td>
             </tr>
         }
 

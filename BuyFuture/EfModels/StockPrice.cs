@@ -7,7 +7,7 @@ namespace BuyFuture.EfModels
     public partial class StockPrice
     {
         public int Id { get; set; }
-        public string Date { get; set; }
+        public DateTime? Date { get; set; }
         public string AdjClose { get; set; }
         public string Close { get; set; }
         public string High { get; set; }

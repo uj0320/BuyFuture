@@ -18,8 +18,6 @@ namespace BuyFuture.EfModels
 
         public virtual DbSet<ImmediatePrice> ImmediatePrice { get; set; }
         public virtual DbSet<Model> Model { get; set; }
-        public virtual DbSet<Price> Price { get; set; }
-        public virtual DbSet<Stock> Stock { get; set; }
         public virtual DbSet<StockBasic> StockBasic { get; set; }
         public virtual DbSet<StockPrice> StockPrice { get; set; }
         public virtual DbSet<TodayPrice> TodayPrice { get; set; }
@@ -68,85 +66,6 @@ namespace BuyFuture.EfModels
                     .HasCollation("utf8_general_ci");
             });
 
-            modelBuilder.Entity<Price>(entity =>
-            {
-                entity.ToTable("price");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Buy)
-                    .HasColumnName("buy")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.Close)
-                    .HasColumnName("close")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.High)
-                    .HasColumnName("high")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.Low)
-                    .HasColumnName("low")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.Open)
-                    .HasColumnName("open")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.Price1)
-                    .HasColumnName("price")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.Sell)
-                    .HasColumnName("sell")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.StockNo)
-                    .HasColumnName("stock_no")
-                    .HasColumnType("varchar(32)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Time)
-                    .HasColumnName("time")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.UpDown)
-                    .HasColumnName("up_down")
-                    .HasColumnType("decimal(10,2)");
-
-                entity.Property(e => e.Volume)
-                    .HasColumnName("volume")
-                    .HasColumnType("decimal(10,2)");
-            });
-
-            modelBuilder.Entity<Stock>(entity =>
-            {
-                entity.ToTable("stock");
-
-                entity.HasIndex(e => e.Code)
-                    .HasName("code");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Code)
-                    .HasColumnName("code")
-                    .HasColumnType("varchar(32)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Name)
-                    .HasColumnName("name")
-                    .HasColumnType("varchar(32)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-            });
-
             modelBuilder.Entity<StockBasic>(entity =>
             {
                 entity.HasKey(e => e.StockNum)
@@ -190,9 +109,7 @@ namespace BuyFuture.EfModels
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
-                    .HasColumnType("varchar(32)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasColumnType("date");
 
                 entity.Property(e => e.High)
                     .HasColumnName("high")
