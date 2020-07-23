@@ -90,17 +90,24 @@
         <tr>
             <th></th>
             <th>使用者</th>
+            <th>關注股票</th>
         </tr>
+
 
         @foreach (var u in ViewBag.users)
         {
-            <tr>
-                <td>
-                    <div name="chart">
-
-                    </div>
-                </td>
+            <tr>                
+                <td>@u.Id</td>
                 <td>@u.Name</td>
+                <td>
+                    <ul>
+
+                        @foreach (var user_stock in u.UserStock)
+                        {
+                            <li><a href='/Home/StockDetails/@user_stock.StockNumNavigation.StockNum'>@user_stock.StockNumNavigation.StockName (@user_stock.StockNumNavigation.StockNum)</a></li>
+                        }
+                    </ul>
+                </td>
             </tr>
         }
 

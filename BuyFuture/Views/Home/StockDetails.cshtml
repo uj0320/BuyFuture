@@ -1,0 +1,75 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.css" rel="stylesheet">
+<script>
+    $(document).ready(function () {
+        setInterval(function () {
+            $.get("/Home/NowPrice/@ViewBag.stock.StockNum", function (data) {
+                if (data != "fail") {
+                    $("#now_price").html(data);
+                }
+            });
+        }, 3000);
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.getJSON("/Home/Price_30_Day/@ViewBag.stock.StockNum", function (jo) {
+            var options = {
+                series: [{
+                    data: jo
+                }],
+                chart: {
+                    type: 'candlestick',
+                    height: 350
+                },
+                title: {
+                    text: 'CandleStick Chart',
+                    align: 'left'
+                },
+                xaxis: {
+                    type: 'datetime'
+                },
+                yaxis: {
+                    tooltip: {
+                        enabled: true
+                    },
+                    labels: {
+
+                        formatter: function (val, index) {
+                            return val.toFixed(2);
+                        }
+                    }
+                },
+                
+
+            };
+
+            var chart = new ApexCharts(document.querySelector("#candlestick_chart"), options);
+            chart.render();
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-12">
+        股票代碼: @ViewBag.stock.StockNum
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        股票名稱: @ViewBag.stock.StockName
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div id="now_price">
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div id="candlestick_chart"></div>
+    </div>
+</div>
