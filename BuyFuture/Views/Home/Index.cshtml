@@ -1,21 +1,25 @@
 ﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.min.css" />
 <script>
-    $(document).ready(function () {        
-            $.getJSON("/Home/GetPrices", function (data) {                
-                gochart(data.highes, data.dates);
-            });       
+    $(document).ready(function () {
+        $.getJSON("/Home/GetPrices", function (data) {
+            gochart(data.highes, data.dates);
+        });
     });
 
     function gochart(prices, time_series) {
         var options = {
             series: [{
                 name: "Desktops",
-                data: prices
+                data: prices,
+                
             }],
             chart: {
-                height: 200,
                 
+                width: 200,
+                toolbar: {
+                    show: false,
+                },
                 type: 'line',
                 zoom: {
                     enabled: false
@@ -27,26 +31,38 @@
             stroke: {
                 curve: 'straight'
             },
-            title: {
-                text: 'Product Trends by Month',
-                align: 'left'
-            },
+            
             grid: {
+                show: false,
                 row: {
                     colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
                     opacity: 0.5
                 },
             },
             xaxis: {
-                categories: time_series
-            }
+                categories: time_series,
+                labels: {
+                    show: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            },
+            yaxis: {
+                
+                labels: {
+                    show: false
+                }
+            },
+            
+            
 
         };
         var divs = document.querySelectorAll('[name = "chart"]');
         divs.forEach(function (div) {
             var chart = new ApexCharts(div, options);
             chart.render();
-        });               
+        });
     }
 </script>
 
@@ -89,14 +105,19 @@
     <table class="table">
         <tr>
             <th></th>
+            <th></th>
             <th>使用者</th>
             <th>關注股票</th>
         </tr>
 
 
+
         @foreach (var u in ViewBag.users)
         {
-            <tr>                
+            <tr>
+                <td>
+                    <div name="chart" style="width:50px"></div>
+                </td>
                 <td>@u.Id</td>
                 <td>@u.Name</td>
                 <td>

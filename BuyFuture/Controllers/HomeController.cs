@@ -47,9 +47,9 @@ namespace BuyFuture.Controllers
 
             List<OHLC> ohlc_list = new List<OHLC>();
             var prices = (from x in stock.StockPrice
-                          where x.Date > DateTime.Now.AddDays(-30)
+                          where x.Date > DateTime.Now.AddDays(-100)
                           orderby x.Date ascending
-                          select x).ToList();
+                          select x).ToList().Take(30);
 
             foreach (var p in prices) 
             {
