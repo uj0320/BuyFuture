@@ -117,6 +117,23 @@ namespace BuyFuture.Controllers
 
             return Json(data);
         }
+        public JsonResult GetUserStockPrices(int user_id, int stock_num)
+        {
+            var dtNow = DateTime.Now;
+            var dtPast_30 = DateTime.Now.AddDays(-30);
+            var stockPrices = (from x in this.db.StockPrice 
+                               where x.StockNum == stock_num && x.Date < dtNow && x.Date > dtPast_30 
+                               orderby x.Date ascending
+                               select x).ToList();
+            var high = (from x in stockPrices select new { x.High }).ToList();
+            var dates = (from x in stockPrices select new { x.Date }).ToList();
+            var data = new
+            {
+                high = high.Select(x => x.High).ToArray(),
+                dates = dates.Select(x => x.Date.Value.ToString("dd")).ToArray()
+            };
+            return Json(data);
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -127,5 +144,6 @@ namespace BuyFuture.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

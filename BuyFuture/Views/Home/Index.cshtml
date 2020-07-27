@@ -2,20 +2,28 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.19.3/apexcharts.min.css" />
 <script>
     $(document).ready(function () {
-        $.getJSON("/Home/GetPrices", function (data) {
-            gochart(data.highes, data.dates);
+        $("div[name=chart]").each(function (i) {
+            var ori_id = $(this).attr("id");
+            var chart_id = $(this).attr("id");
+            chart_id = chart_id.replace("chart_", "");
+            var arr_id = chart_id.split("_");
+            $.getJSON("/Home/GetUserStockPrices", { user_id: arr_id[0], stock_num: arr_id[1] }, function (data) {                
+                var options = set_option_data(data.high, data.dates);
+                var chart = new ApexCharts(document.getElementById(ori_id), options);
+                chart.render();
+            });
+           
         });
     });
-
-    function gochart(prices, time_series) {
+    function set_option_data(prices, time_series) {
         var options = {
             series: [{
                 name: "Desktops",
                 data: prices,
-                
+
             }],
             chart: {
-                
+
                 width: 200,
                 toolbar: {
                     show: false,
@@ -29,9 +37,9 @@
                 enabled: false
             },
             stroke: {
-                curve: 'straight'
+                curve: 'straight',
+                width: 2                
             },
-            
             grid: {
                 show: false,
                 row: {
@@ -42,26 +50,31 @@
             xaxis: {
                 categories: time_series,
                 labels: {
-                    show: false
+                    show: true,
+                    
                 },
                 tooltip: {
                     enabled: false
                 }
             },
-            yaxis: {
-                
+            yaxis: {                
                 labels: {
                     show: false
                 }
             },
-            
-            
+            tooltip: {
+                enabled: false
+            }
+
 
         };
+        return options;
+    }
+    function gochart(prices, time_series) {
+        
         var divs = document.querySelectorAll('[name = "chart"]');
         divs.forEach(function (div) {
-            var chart = new ApexCharts(div, options);
-            chart.render();
+            
         });
     }
 </script>
@@ -102,35 +115,44 @@
     </dir>
 </dir>
 <dir class="row">
-    <table class="table">
-        <tr>
-            <th></th>
-            <th></th>
-            <th>使用者</th>
-            <th>關注股票</th>
-        </tr>
+    @foreach (var u in ViewBag.users)
+    {
+        <div class="panel panel-warning">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">@u.Name</div>
+                <div class="panel-body">
+                    <p>...</p>
+                </div>
+
+                <!-- Table -->
+                <table class="table">
+                    <tr>
+                        <th>#</th>
+                        <th>關注股票</th>
+                        <th></th>
+                    </tr>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var stock in u.UserStock)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td><a href="/Home/StockDetails/@stock.StockNumNavigation.StockNum">@(stock.StockNumNavigation.StockName)(@stock.StockNumNavigation.StockNum)</a></td>
+                            <td>
+                                <div name="chart" id="chart_@(u.Id)_@stock.StockNum">
+
+                                </div>
+                            </td>
+                        </tr>
+                        count++;
+                    }
 
 
+                </table>
+            </div>
+        </div>
+    }
 
-        @foreach (var u in ViewBag.users)
-        {
-            <tr>
-                <td>
-                    <div name="chart" style="width:50px"></div>
-                </td>
-                <td>@u.Id</td>
-                <td>@u.Name</td>
-                <td>
-                    <ul>
-
-                        @foreach (var user_stock in u.UserStock)
-                        {
-                            <li><a href='/Home/StockDetails/@user_stock.StockNumNavigation.StockNum'>@user_stock.StockNumNavigation.StockName (@user_stock.StockNumNavigation.StockNum)</a></li>
-                        }
-                    </ul>
-                </td>
-            </tr>
-        }
-
-    </table>
 </dir>
