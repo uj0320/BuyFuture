@@ -10,6 +10,7 @@ using BuyFuture.EfModels;
 using System.Data;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using BuyFuture.Utility;
 
 namespace BuyFuture.Controllers
 {
@@ -120,16 +121,26 @@ namespace BuyFuture.Controllers
         public JsonResult GetUserStockPrices(int user_id, int stock_num)
         {
             var dtNow = DateTime.Now;
-            var dtPast_30 = DateTime.Now.AddDays(-30);
+            var dtPast_30 = DateTime.Now.AddDays(-200);
             var stockPrices = (from x in this.db.StockPrice 
                                where x.StockNum == stock_num && x.Date < dtNow && x.Date > dtPast_30 
                                orderby x.Date ascending
-                               select x).ToList();
-            var high = (from x in stockPrices select new { x.High }).ToList();
+                               select x).Take(30).ToList();
+
+            var pricesForPredict = (from x in this.db.StockPrice 
+                                    where x.StockNum == stock_num && x.Date < dtNow && x.Date > dtPast_30
+                                    orderby x.Date ascending
+                                    select decimal.Parse(x.High)).Take(36).ToList();
+            var res = Utils.PredictPrices(pricesForPredict); 
+
+            var prices = (from x in stockPrices select x.High).ToList().ToArray();
+            var predict_prices = (from x in res select x).ToList().ToArray();
+            
             var dates = (from x in stockPrices select new { x.Date }).ToList();
             var data = new
             {
-                high = high.Select(x => x.High).ToArray(),
+                prices = prices,
+                predict_prices = predict_prices,
                 dates = dates.Select(x => x.Date.Value.ToString("dd")).ToArray()
             };
             return Json(data);

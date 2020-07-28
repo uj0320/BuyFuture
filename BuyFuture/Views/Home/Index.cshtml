@@ -7,21 +7,26 @@
             var chart_id = $(this).attr("id");
             chart_id = chart_id.replace("chart_", "");
             var arr_id = chart_id.split("_");
-            $.getJSON("/Home/GetUserStockPrices", { user_id: arr_id[0], stock_num: arr_id[1] }, function (data) {                
-                var options = set_option_data(data.high, data.dates);
+            $.getJSON("/Home/GetUserStockPrices", { user_id: arr_id[0], stock_num: arr_id[1] }, function (data) {
+                var options = set_option_data(data.prices, data.predict_prices, data.dates);
                 var chart = new ApexCharts(document.getElementById(ori_id), options);
                 chart.render();
             });
            
         });
     });
-    function set_option_data(prices, time_series) {
+    function set_option_data(prices, predict_prices, time_series) {
         var options = {
-            series: [{
-                name: "Desktops",
-                data: prices,
-
-            }],
+            series: [
+                {
+                    name: "Real",
+                    data: prices,
+                },
+                {
+                    name: "Predict",
+                    data: predict_prices,
+                }
+            ],
             chart: {
 
                 width: 200,
