@@ -1,0 +1,20 @@
+﻿<table class="table">
+    <tr>
+        <td>#</td>
+        <td>股票</td>
+        <td>次數</td>
+    </tr>
+    @{ 
+        int cnt = 1;
+    }
+    @foreach(var stock in ViewBag.stocks)
+    {
+        <tr>
+            <td>@cnt</td>
+            <td><a href="/Stock/StockDetails/@stock.StockNum">@stock.StockName (@stock.StockNum)</a></td>
+            <td>@stock.QueryCount 次</td>
+        </tr>
+
+        cnt++;
+    }
+</table>

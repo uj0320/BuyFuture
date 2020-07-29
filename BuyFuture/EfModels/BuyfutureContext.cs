@@ -77,6 +77,10 @@ namespace BuyFuture.EfModels
                     .HasColumnName("stock_num")
                     .HasColumnType("int(11)");
 
+                entity.Property(e => e.QueryCount)
+                    .HasColumnName("query_count")
+                    .HasColumnType("int(255)");
+
                 entity.Property(e => e.StockName)
                     .HasColumnName("stock_name")
                     .HasColumnType("varchar(32)")

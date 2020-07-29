@@ -118,17 +118,7 @@ namespace BuyFuture.Controllers
 
             return Json(ohlc_list);
         }
-        [Route("Home/StockDetails/{stock_num?}")]
-        public IActionResult StockDetails(int stock_num)
-        {
-            var stock = (from x in this.db.StockBasic 
-                      .Include(x => x.TodayPrice)
-                      where x.StockNum == stock_num
-                       select x).FirstOrDefault();
 
-            ViewBag.stock = stock;
-            return View();
-        }
         [Route("Home/NowPrice/{stock_num?}")]
         public IActionResult NowPrice(int stock_num)
         {

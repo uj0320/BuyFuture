@@ -24,7 +24,7 @@
                     height: 350
                 },
                 title: {
-                    text: 'CandleStick Chart',
+                    text: '@Html.Raw(ViewBag.stock.StockName) (@ViewBag.stock.StockNum)',
                     align: 'left'
                 },
                 xaxis: {
@@ -73,16 +73,7 @@
         });
     });
 </script>
-<div class="row">
-    <div class="col-12">
-        股票代碼: @ViewBag.stock.StockNum
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        股票名稱: @ViewBag.stock.StockName
-    </div>
-</div>
+
 <div class="row">
     <div class="col-12">
         <div id="now_price">

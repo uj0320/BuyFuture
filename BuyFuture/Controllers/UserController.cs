@@ -26,6 +26,10 @@ namespace BuyFuture.Controllers
             _logger = logger;
         }
 
+        public IActionResult UserAdminIndex()
+        {
+            return View();
+        }
 
     }
 }

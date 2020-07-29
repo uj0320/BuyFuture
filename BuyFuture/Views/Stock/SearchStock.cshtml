@@ -1,0 +1,18 @@
+﻿<table class="table">
+    <tr>
+        <td>#</td>
+        <td>股票</td>
+    </tr>
+    @{ 
+        int cnt = 1;
+    }
+    @foreach(var stock in ViewBag.stocks)
+    {
+        <tr>
+            <td>@cnt</td>
+            <td><a href="/Stock/StockDetails/@stock.StockNum">@stock.StockName (@stock.StockNum)</a></td>
+        </tr>
+
+        cnt++;
+    }
+</table>

@@ -15,6 +15,7 @@ namespace BuyFuture.EfModels
 
         public int StockNum { get; set; }
         public string StockName { get; set; }
+        public int? QueryCount { get; set; }
 
         public virtual ICollection<StockPrice> StockPrice { get; set; }
         public virtual ICollection<TodayPrice> TodayPrice { get; set; }
