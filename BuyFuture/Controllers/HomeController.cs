@@ -11,6 +11,9 @@ using System.Data;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using BuyFuture.Utility;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BuyFuture.Controllers
 {
@@ -22,6 +25,52 @@ namespace BuyFuture.Controllers
         {
             _logger = logger;
         }
+
+
+
+        // 登入
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult LoginPost([Bind] User u)
+        {
+            var res = (from x in this.db.User where x.Name == u.Name && x.Pwd == u.Pwd select x).FirstOrDefault();
+
+            if(res == null)
+            {
+                return View("fail");
+            }
+
+            var userClaims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, u.Name)                    
+                 };
+
+            var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
+
+            var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
+            HttpContext.SignInAsync(userPrincipal);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        [Authorize]
+        public IActionResult Test()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             

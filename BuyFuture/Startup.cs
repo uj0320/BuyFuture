@@ -23,6 +23,14 @@ namespace BuyFuture
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddAuthentication("CookieAuthentication")
+                             .AddCookie("CookieAuthentication", config =>
+                             {
+                                 config.Cookie.Name = "UserLoginCookie";
+                                 config.LoginPath = "/Home/Login";
+                             });
+
             services.AddControllersWithViews();
         }
 
@@ -44,6 +52,10 @@ namespace BuyFuture
 
             app.UseRouting();
 
+            // who are you?  
+            app.UseAuthentication();
+
+            // are you allowed?  
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -54,6 +66,8 @@ namespace BuyFuture
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 
             });
+
+
         }
     }
 }
