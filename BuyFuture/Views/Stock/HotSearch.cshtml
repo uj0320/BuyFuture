@@ -1,4 +1,5 @@
-﻿<table class="table">
+﻿<h2>熱門搜尋排行</h2>
+<table class="table">
     <tr>
         <td>#</td>
         <td>股票</td>
@@ -11,7 +12,11 @@
     {
         <tr>
             <td>@cnt</td>
-            <td><a href="/Stock/StockDetails/@stock.StockNum">@stock.StockName (@stock.StockNum)</a></td>
+            <td>
+                <a href="/Stock/StockDetails/@stock.StockNum">
+                    @stock.StockName (@stock.StockNum)
+                </a>
+            </td>
             <td>@stock.QueryCount 次</td>
         </tr>
 

@@ -1,0 +1,36 @@
+﻿<div class="row">
+    <div class="col-12">
+        <br />
+        <br />
+    </div>    
+</div>
+<div class="row">
+    <div class="col-xl-3">
+        <partial name="/Views/User/_UserAdminIndexMenu.cshtml" />
+    </div>
+    <div class="col-xl-9">
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>股票名稱</th>
+                <th></th>
+            </tr>
+            @{ 
+                int count = 1;
+            }
+            @foreach (var stock in ViewBag.stocks) 
+            {
+                <tr>
+                    <td>@count</td>
+                    <td>
+                        <a href="/Stock/StockDetails/@stock.StockNumNavigation.StockNum">
+                            @stock.StockNumNavigation.StockName (@stock.StockNumNavigation.StockNum)
+                        </a>
+                    </td>
+                    <td></td>
+                </tr>
+                count++;
+            }
+        </table>
+    </div>
+</div>

@@ -39,15 +39,15 @@ namespace BuyFuture.Controllers
         {
             var res = (from x in this.db.User where x.Name == u.Name && x.Pwd == u.Pwd select x).FirstOrDefault();
 
-            if(res == null)
+            if (res == null)
             {
                 return View("fail");
             }
 
             var userClaims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.Name, u.Name)                    
-                 };
+            {
+                new Claim(ClaimTypes.Name, u.Name)
+            };
 
             var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
 
@@ -73,7 +73,7 @@ namespace BuyFuture.Controllers
 
         public IActionResult Index()
         {
-            
+            //抓使用者
             var users = (from x in db.User
                          .Include(x => x.UserStock) 
                          .ThenInclude(x => x.StockNumNavigation)

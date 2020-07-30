@@ -71,7 +71,7 @@ namespace BuyFuture.Controllers
 
             ViewBag.stocks = stocks;
 
-            return View("SearchStock");
+            return View();
         }
 
     }

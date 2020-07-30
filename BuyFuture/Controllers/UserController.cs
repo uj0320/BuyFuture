@@ -30,6 +30,19 @@ namespace BuyFuture.Controllers
         {
             return View();
         }
+        public IActionResult WatchStock()
+        {
+            var UserName = this.User.Identity.Name;
+            var u = (from x in db.User
+                     .Include(x => x.UserStock)
+                     .Include("UserStock.StockNumNavigation")
+                     where x.Name == UserName 
+                     select x).FirstOrDefault();
+            
+            ViewBag.stocks = u.UserStock;
+            return View();
+        }
+
 
     }
 }

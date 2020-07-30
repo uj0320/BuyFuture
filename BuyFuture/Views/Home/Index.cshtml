@@ -29,7 +29,7 @@
             ],
             chart: {
 
-                width: 200,
+                width: 300,
                 toolbar: {
                     show: false,
                 },
@@ -113,14 +113,9 @@
 <dir class="row">
     @foreach (var u in ViewBag.users)
     {
-        <div class="panel panel-warning">
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
+        
                 <div class="panel-heading">@u.Name</div>
-                <div class="panel-body">
-                    <p>...</p>
-                </div>
-
+                
                 <!-- Table -->
                 <table class="table">
                     <tr>
@@ -135,7 +130,11 @@
                     {
                         <tr>
                             <td>@count</td>
-                            <td><a href="/Home/StockDetails/@stock.StockNumNavigation.StockNum">@(stock.StockNumNavigation.StockName)(@stock.StockNumNavigation.StockNum)</a></td>
+                            <td>
+                                <a href="/Home/StockDetails/@stock.StockNumNavigation.StockNum">
+                                    @(stock.StockNumNavigation.StockName)(@stock.StockNumNavigation.StockNum)
+                                </a>
+                            </td>
                             <td>
                                 <div name="chart" id="chart_@(u.Id)_@stock.StockNum">
 
@@ -147,8 +146,7 @@
 
 
                 </table>
-            </div>
-        </div>
+            
     }
 
 </dir>
