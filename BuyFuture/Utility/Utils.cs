@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BuyFuture.Controllers.cls;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -35,6 +37,11 @@ namespace BuyFuture.Utility
                 li.Add(p);
             }
             return li.ToArray();
+        }
+
+        public static Parameters JstrToParametersObj(string jstr)
+        {
+            return JsonConvert.DeserializeObject<Parameters>(jstr);
         }
     }
 }

@@ -22,6 +22,10 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "role"
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "stock_basic"
       },
       {
@@ -39,6 +43,10 @@
       {
          "HasPrimaryKey": true,
          "Name": "user_model"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "user_role"
       },
       {
          "HasPrimaryKey": true,

@@ -18,11 +18,13 @@ namespace BuyFuture.EfModels
 
         public virtual DbSet<ImmediatePrice> ImmediatePrice { get; set; }
         public virtual DbSet<Model> Model { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<StockBasic> StockBasic { get; set; }
         public virtual DbSet<StockPrice> StockPrice { get; set; }
         public virtual DbSet<TodayPrice> TodayPrice { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserModel> UserModel { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<UserStock> UserStock { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -59,9 +61,30 @@ namespace BuyFuture.EfModels
                     .HasColumnName("id")
                     .HasColumnType("int(11)");
 
+                entity.Property(e => e.Description)
+                    .HasColumnName("description")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
                 entity.Property(e => e.ModelName)
                     .HasColumnName("model_name")
-                    .HasColumnType("varchar(0)")
+                    .HasColumnType("varchar(64)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("role");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.RoleName)
+                    .HasColumnName("role_name")
+                    .HasColumnType("varchar(64)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
             });
@@ -269,6 +292,12 @@ namespace BuyFuture.EfModels
                     .HasColumnName("model_id")
                     .HasColumnType("int(11)");
 
+                entity.Property(e => e.Parameters)
+                    .HasColumnName("parameters")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
                 entity.Property(e => e.UserId)
                     .HasColumnName("user_id")
                     .HasColumnType("int(11)");
@@ -284,6 +313,41 @@ namespace BuyFuture.EfModels
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_user_id1");
+            });
+
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.ToTable("user_role");
+
+                entity.HasIndex(e => e.RoleId)
+                    .HasName("fk_role_id_2");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("fk_user_id_5");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.RoleId)
+                    .HasColumnName("role_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("user_id")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.UserRole)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_role_id_2");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserRole)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_user_id_5");
             });
 
             modelBuilder.Entity<UserStock>(entity =>

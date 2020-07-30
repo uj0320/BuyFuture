@@ -27,7 +27,6 @@ namespace BuyFuture.Controllers
         }
 
 
-
         // 登入
         public IActionResult Login()
         {
@@ -37,17 +36,22 @@ namespace BuyFuture.Controllers
         [HttpPost]
         public IActionResult LoginPost([Bind] User u)
         {
-            var res = (from x in this.db.User where x.Name == u.Name && x.Pwd == u.Pwd select x).FirstOrDefault();
+            var res = (from x in this.db.User 
+                       .Include(x => x.UserRole)
+                       .Include("UserRole.Role")
+                       where x.Name == u.Name && x.Pwd == u.Pwd select x).FirstOrDefault();
 
             if (res == null)
             {
                 return View("fail");
             }
 
-            var userClaims = new List<Claim>()
+            var userClaims = new List<Claim>();
+            userClaims.Add(new Claim(ClaimTypes.Name, res.Name)); // user name
+            foreach(var ur in res.UserRole)
             {
-                new Claim(ClaimTypes.Name, u.Name)
-            };
+                userClaims.Add(new Claim(ClaimTypes.Role, ur.Role.RoleName)); // role
+            }
 
             var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
 

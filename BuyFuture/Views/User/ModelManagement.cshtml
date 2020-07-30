@@ -1,0 +1,92 @@
+﻿<script>
+    $(document).ready(function () {
+        $("button[name=update_parameters]").click(function (e) {
+            var id = e.target.id.replace("um_id_", "");
+
+            $("#user_model_id").val(id);
+
+            $.getJSON("/User/GetParametersById", { um_id: id }, function (jo) {
+                console.log(jo);
+                $("#learning_rate").val(jo.learning_rate);
+                $("#epoch").val(jo.epoch);
+            });
+
+            $("#dlg_update_parameters").modal("show");
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <br />
+        <br />
+    </div>
+    <div class="col-xl-3">
+        <partial name="/Views/User/_UserAdminIndexMenu.cshtml" />
+
+    </div>
+    <div class="col-xl-9">
+        <h2>模型管理</h2>
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>模型名稱</th>
+                <th>說明</th>
+                <th>參數</th>
+                <th></th>
+            </tr>
+            @{ 
+                int cnt = 1;
+            }
+            @foreach (var um in ViewBag.user_models)
+            {
+                <tr>
+                    <td>@cnt</td>
+                    <td>@um.Model.ModelName</td>
+                    <td>@um.Model.Description</td>
+                    <td>
+                        @{
+                            var jo = BuyFuture.Utility.Utils.JstrToParametersObj(um.Parameters);
+
+                            <div class="alert alert-primary" role="alert">
+                                @jo.learning_rate
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                @jo.epoch
+                            </div>
+                        }
+                    </td>
+                    <td><button class="btn btn-danger" name="update_parameters" id="um_id_@um.Id">更新參數</button></td>
+                </tr>
+                cnt++;
+            }
+        </table>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="dlg_update_parameters">
+    <div class="modal-dialog" role="document">
+        <form action="/User/UpdateParameters" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">修改模型參數</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="user_model_id" name="user_model_id" value="" />
+
+                    Learning Rate: <input type="number" class="form-control" id="learning_rate" name="learning_rate" step="0.001" />
+                    Epoch: <input type="number" class="form-control" id="epoch" name="epoch"  />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">確定</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </form>    
+    </div>
+</div>
